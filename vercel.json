@@ -1,9 +1,9 @@
 {
   "version": 2,
   "builds": [
-    { "src": "ecommerceProject/index.js", "use": "@vercel/node" }
+    { "src": "ecommerceProject/api/index.js", "use": "@vercel/node" }
   ],
   "routes": [
-    { "src": "/api/(.*)", "dest": "ecommerceProject/index.js" }
+    { "src": "/api/(.*)", "dest": "ecommerceProject/api/index.js" }
   ]
 }
