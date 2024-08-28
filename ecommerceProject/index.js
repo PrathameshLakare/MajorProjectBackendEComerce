@@ -1,9 +1,8 @@
 const express = require("express");
 const app = express();
-const { initializeDatabase } = require("../db/db.connect");
-const Product = require("../models/products.model");
-const Category = require("../models/categories.model");
-
+const { initializeDatabase } = require("./db/db.connect");
+const Product = require("./models/products.model");
+const Category = require("./models/categories.model");
 
 app.use(express.json());
 initializeDatabase();
@@ -32,7 +31,9 @@ app.post("/api/products", async (req, res) => {
   try {
     const savedProduct = await createProductsData(req.body);
     if (savedProduct) {
-      res.status(201).json({message: "Product saved succussfully",product: savedProduct});
+      res
+        .status(201)
+        .json({ message: "Product saved succussfully", product: savedProduct });
     }
   } catch (error) {
     res.status(500).json({ error: "Failed to add data" });
@@ -83,67 +84,72 @@ app.get("/api/products/:productId", async (req, res) => {
   }
 });
 
-async function createCategory (categoryData){
-  try{
-    const category = new Category(categoryData)
-    const savedCategory = await category.save()
-    return savedCategory
-  }catch(error){
-    console.log(error)
-  }
-}
-
-app.post("/api/categories", async(req,res) => {
-  try{
-    const category = await createCategory(req.body)
-    if(category){
-      res.status(201).json({message: "Category added successfully.", category: {category}})
-    }
-  }catch(error){
-    res.status(500).json({error: "Failed to fetch categories."})
-  }
-})
-async function readAllCategories(){
-  try{
-    const categories = await Category.find()
-    return categories
-  }catch(error){
-    console.log(error)
-  }
-}
-
-app.get("/api/categories", async (req,res) => {
-  try{
-    const categories = await readAllCategories()
-    if(categories){
-      res.json(categories)
-    }else{
-      res.status(404).json({error: "No category found."})
-    }
-  }catch(error){
-    res.status(500).json({error: "Failed to fetch categories."})
-  }
-})
-
-async function readAllCategoriesById(categoryId){
-  try{
-    const category = await Category.findById(categoryId)
-    return category
-  }catch(error){
-    console.log(error)
-  }
-}
-
-app.get('/api/categories/:categoryId', async (req, res) => {
+async function createCategory(categoryData) {
   try {
-    const category = await readAllCategoriesById(req.params.categoryId);
-    if(category){
-      res.json(category)
-    }else{
-      res.status(404).json({error: "No category found."})
+    const category = new Category(categoryData);
+    const savedCategory = await category.save();
+    return savedCategory;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+app.post("/api/categories", async (req, res) => {
+  try {
+    const category = await createCategory(req.body);
+    if (category) {
+      res
+        .status(201)
+        .json({
+          message: "Category added successfully.",
+          category: { category },
+        });
     }
   } catch (error) {
-    res.status(500).json({error: "Failed to fetch category."})
+    res.status(500).json({ error: "Failed to fetch categories." });
+  }
+});
+async function readAllCategories() {
+  try {
+    const categories = await Category.find();
+    return categories;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+app.get("/api/categories", async (req, res) => {
+  try {
+    const categories = await readAllCategories();
+    if (categories) {
+      res.json(categories);
+    } else {
+      res.status(404).json({ error: "No category found." });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch categories." });
+  }
+});
+
+async function readAllCategoriesById(categoryId) {
+  try {
+    const category = await Category.findById(categoryId);
+    return category;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+app.get("/api/categories/:categoryId", async (req, res) => {
+  try {
+    const category = await readAllCategoriesById(req.params.categoryId);
+    if (category) {
+      res.json(category);
+    } else {
+      res.status(404).json({ error: "No category found." });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch category." });
   }
 });
 
