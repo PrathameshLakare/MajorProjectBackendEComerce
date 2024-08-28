@@ -1,8 +1,9 @@
 const express = require("express");
 const app = express();
-const { initializeDatabase } = require("./db/db.connect");
-const Product = require("./models/products.model");
-const Category = require("./models/categories.model");
+const { initializeDatabase } = require("../db/db.connect");
+const Product = require("../models/products.model");
+const Category = require("../models/categories.model");
+
 
 app.use(express.json());
 initializeDatabase();
