@@ -4,6 +4,6 @@
     { "src": "ecommerceProject/api/index.js", "use": "@vercel/node" }
   ],
   "routes": [
-    { "src": "/api/(.*)", "dest": "ecommerceProject/api/index.js" }
+    { "src": "/api/(.*)", "dest": "/" }
   ]
 }
