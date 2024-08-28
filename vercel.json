@@ -1,5 +1,5 @@
 {
   "version": 2,
-  "builds": [{ "src": "ecommerceProject/index.js", "use": "@vercel/node" }],
-  "routes": [{ "src": "/api/(.*)", "dest": "ecommerceProject/index.js" }]
+  "builds": [{ "src": "index.js", "use": "@vercel/node" }],
+  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
 }
