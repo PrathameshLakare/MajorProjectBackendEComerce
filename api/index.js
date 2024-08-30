@@ -9,13 +9,13 @@ initializeDatabase();
 
 const cors = require("cors");
 
-const corsOption = {
-  origin: "*",
-  credential: true,
-  optionSuccessStatus: 200,
-};
+// const corsOption = {
+//   origin: "*",
+//   credential: true,
+//   optionSuccessStatus: 200,
+// };
 
-app.use(cors(corsOption));
+app.use(cors());
 
 async function createProductsData(productData) {
   try {
