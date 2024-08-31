@@ -7,7 +7,6 @@ const initializeDatabase = async () => {
     const connection = await mongoose.connect(mongoURI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      poolSize: 50,
     });
     if (connection) {
       console.log("Connected Successfully");
