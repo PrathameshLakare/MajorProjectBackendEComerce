@@ -3,6 +3,8 @@ const app = express();
 const { initializeDatabase } = require("./db/db.connect");
 const Product = require("./models/products.model");
 const Category = require("./models/categories.model");
+const Wishlist = require("./models/wishlist.model");
+const Cart = require("./models/cart.model");
 
 app.use(express.json());
 initializeDatabase();
@@ -98,12 +100,10 @@ app.post("/api/categories", async (req, res) => {
   try {
     const category = await createCategory(req.body);
     if (category) {
-      res
-        .status(201)
-        .json({
-          message: "Category added successfully.",
-          category: { category },
-        });
+      res.status(201).json({
+        message: "Category added successfully.",
+        category: { category },
+      });
     }
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch categories." });
@@ -150,6 +150,101 @@ app.get("/api/categories/:categoryId", async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch category." });
+  }
+});
+
+//wishlist management
+app.get("/api/wishlist", async (req, res) => {
+  try {
+    const products = await Wishlist.find();
+
+    if (products) {
+      res.json(products);
+    } else {
+      res.status(404).json({ error: "No product found." });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Failed to get wishlist" });
+  }
+});
+
+app.post("/api/wishlist", async (req, res) => {
+  try {
+    const product = new Wishlist(req.body);
+    const savedProduct = await product.save();
+
+    if (savedProduct) {
+      res
+        .status(201)
+        .json({ message: "Product saved succussfully", product: savedProduct });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Failed to post wishlist" });
+  }
+});
+
+app.delete("/api/wishlist/:id", async (req, res) => {
+  try {
+    const deletedProduct = await Wishlist.findByIdAndDelete(req.params.id);
+
+    if (!deletedProduct) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    res.status(200).json({
+      message: "Product deleted successfully",
+      product: deletedProduct,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete product" });
+  }
+});
+
+// cart management
+
+app.get("/api/cart", async (req, res) => {
+  try {
+    const products = await Cart.find();
+
+    if (products) {
+      res.json(products);
+    } else {
+      res.status(404).json({ error: "No product found." });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Failed to get cart list" });
+  }
+});
+
+app.post("/api/cart", async (req, res) => {
+  try {
+    const product = new Cart(req.body);
+    const savedProduct = await product.save();
+
+    if (savedProduct) {
+      res
+        .status(201)
+        .json({ message: "Product saved succussfully", product: savedProduct });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Failed to post product" });
+  }
+});
+
+app.delete("/api/cart/:id", async (req, res) => {
+  try {
+    const deletedProduct = await Cart.findByIdAndDelete(req.params.id);
+
+    if (!deletedProduct) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    res.status(200).json({
+      message: "Product deleted successfully",
+      product: deletedProduct,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete product" });
   }
 });
 
