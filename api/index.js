@@ -5,6 +5,7 @@ const Product = require("./models/products.model");
 const Category = require("./models/categories.model");
 const Wishlist = require("./models/wishlist.model");
 const Cart = require("./models/cart.model");
+const Address = require("./models/address.model");
 
 app.use(express.json());
 initializeDatabase();
@@ -185,7 +186,9 @@ app.post("/api/wishlist", async (req, res) => {
 
 app.delete("/api/wishlist/:id", async (req, res) => {
   try {
-    const deletedProduct = await Wishlist.findByIdAndDelete(req.params.id);
+    const deletedProduct = await Wishlist.findOneAndDelete({
+      productId: req.params.id,
+    });
 
     if (!deletedProduct) {
       return res.status(404).json({ error: "Product not found" });
@@ -231,9 +234,32 @@ app.post("/api/cart", async (req, res) => {
   }
 });
 
+app.put("/api/updateCart/:id", async (req, res) => {
+  const updatedProductData = req.body;
+
+  try {
+    const updatedProduct = await Cart.findOneAndUpdate(
+      { productId: req.params.id },
+      updatedProductData,
+      { new: true },
+    );
+
+    if (!updatedProduct) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.status(200).json(updatedProduct);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 app.delete("/api/cart/:id", async (req, res) => {
   try {
-    const deletedProduct = await Cart.findByIdAndDelete(req.params.id);
+    const deletedProduct = await Cart.findOneAndDelete({
+      productId: req.params.id,
+    });
 
     if (!deletedProduct) {
       return res.status(404).json({ error: "Product not found" });
@@ -245,6 +271,64 @@ app.delete("/api/cart/:id", async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ error: "Failed to delete product" });
+  }
+});
+
+//address
+
+app.post("/api/user/address", async (req, res) => {
+  try {
+    const newAddress = new Address(req.body);
+    const savedAddress = await newAddress.save();
+
+    if (savedAddress) {
+      res
+        .status(201)
+        .json({ message: "Address saved succussfully", product: savedAddress });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Failed to post address." });
+  }
+});
+
+app.get("/api/user/address", async (req, res) => {
+  try {
+    const allAddress = await Address.find();
+    if (allAddress) {
+      res.json(allAddress);
+    } else {
+      res.status(404).json({ error: "No address found." });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch address." });
+  }
+});
+
+app.post("/api/user/address/:id", async (req, res) => {
+  try {
+    const updatedAddress = await Address.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true },
+    );
+    if (updatedAddress) {
+      res.status(200).json(updatedAddress);
+    } else {
+      res.status(404).json({ error: "Address not found." });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update address." });
+  }
+});
+
+app.delete("/api/user/address/:id", async (req, res) => {
+  try {
+    const deletedAddress = await Address.findByIdAndDelete(req.params.id);
+    if (!deletedAddress) {
+      res.status(404).json({ error: "address not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete address." });
   }
 });
 
