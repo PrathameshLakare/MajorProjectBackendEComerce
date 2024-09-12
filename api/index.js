@@ -7,24 +7,18 @@ const Wishlist = require("./models/wishlist.model");
 const Cart = require("./models/cart.model");
 const Address = require("./models/address.model");
 
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-  }),
-);
+const cors = require("cors");
+
+app.use(cors());
 
 app.use(express.json());
 initializeDatabase();
-
-// const cors = require("cors");
 
 // const corsOption = {
 //   origin: "*",
 //   credential: true,
 //   optionSuccessStatus: 200,
 // };
-
-//app.use(cors());
 
 async function createProductsData(productData) {
   try {
