@@ -154,7 +154,6 @@ app.get("/api/categories/:categoryId", async (req, res) => {
   }
 });
 
-//wishlist management
 app.get("/api/wishlist", async (req, res) => {
   try {
     const products = await Wishlist.find();
@@ -203,8 +202,6 @@ app.delete("/api/wishlist/:id", async (req, res) => {
   }
 });
 
-// cart management
-
 app.get("/api/cart", async (req, res) => {
   try {
     const products = await Cart.find();
@@ -241,7 +238,7 @@ app.put("/api/updateCart/:id", async (req, res) => {
     const updatedProduct = await Cart.findOneAndUpdate(
       { productId: req.params.id },
       updatedProductData,
-      { new: true },
+      { new: true }
     );
 
     if (!updatedProduct) {
@@ -274,8 +271,6 @@ app.delete("/api/cart/:id", async (req, res) => {
   }
 });
 
-//address
-
 app.post("/api/user/address", async (req, res) => {
   try {
     const newAddress = new Address(req.body);
@@ -304,12 +299,12 @@ app.get("/api/user/address", async (req, res) => {
   }
 });
 
-app.put("/api/user/address/:id", async (req, res) => {
+app.post("/api/user/address/:id", async (req, res) => {
   try {
     const updatedAddress = await Address.findByIdAndUpdate(
       req.params.id,
       req.body,
-      { new: true },
+      { new: true }
     );
     if (updatedAddress) {
       res.status(200).json(updatedAddress);
