@@ -319,15 +319,15 @@ app.post("/api/user/address/:id", async (req, res) => {
 app.delete("/api/user/address/:id", async (req, res) => {
   try {
     const deletedAddress = await Address.findByIdAndDelete(req.params.id);
-    if (deletedAddress) {
-      res.status(200).json({
-        message: "Address deleted successfully",
-        id: deletedAddress._id,
-      });
-    } else {
-      res.status(404).json({ error: "Address not found." });
+    if (!deletedAddress) {
+      return res.status(404).json({ error: "Address not found." });
     }
+    res.status(200).json({
+      message: "Address deleted successfully",
+      address: deletedAddress,
+    });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Failed to delete address." });
   }
 });
