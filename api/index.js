@@ -310,12 +310,15 @@ app.post("/api/user/address/:id", async (req, res) => {
   }
 });
 
-app.delete("/api/user/address/deleteAddress/:id", async (req, res) => {
+app.delete("/api/user/address/:id", async (req, res) => {
   try {
+    console.log(req.params.id);
     const deletedAddress = await Address.findByIdAndDelete(req.params.id);
+
     if (!deletedAddress) {
-      return res.status(404).json({ error: "Address not found." });
+      return res.status(404).json({ error: "Address not found" });
     }
+
     res.status(200).json({
       message: "Address deleted successfully",
       address: deletedAddress,
@@ -326,7 +329,7 @@ app.delete("/api/user/address/deleteAddress/:id", async (req, res) => {
   }
 });
 
-const PORT = 3000;
+const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
 });
