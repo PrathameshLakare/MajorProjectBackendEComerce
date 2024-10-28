@@ -9,7 +9,13 @@ const Address = require("./models/address.model");
 
 const cors = require("cors");
 
-app.use(cors());
+// app.use(cors());
+app.use(
+  cors({
+    origin:
+      "https://ecommerce-clothing-2well7yrj-prathamesh-lakares-projects.vercel.app",
+  })
+);
 
 app.use(express.json());
 initializeDatabase();
