@@ -310,7 +310,7 @@ app.post("/api/user/address/:id", async (req, res) => {
   }
 });
 
-app.delete("/api/user/address/:id", async (req, res) => {
+app.delete("/api/user/address/deleteAddress/:id", async (req, res) => {
   try {
     const deletedAddress = await Address.findByIdAndDelete(req.params.id);
     if (!deletedAddress) {
