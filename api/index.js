@@ -9,22 +9,10 @@ const Address = require("./models/address.model");
 
 const cors = require("cors");
 
-// app.use(cors());
-app.use(
-  cors({
-    origin:
-      "https://ecommerce-clothing-2well7yrj-prathamesh-lakares-projects.vercel.app",
-  })
-);
+app.use(cors());
 
 app.use(express.json());
 initializeDatabase();
-
-// const corsOption = {
-//   origin: "*",
-//   credential: true,
-//   optionSuccessStatus: 200,
-// };
 
 async function createProductsData(productData) {
   try {
