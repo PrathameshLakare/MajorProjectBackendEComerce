@@ -9,7 +9,12 @@ const Address = require("./models/address.model");
 
 const cors = require("cors");
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
 
 app.use(express.json());
 initializeDatabase();
@@ -312,7 +317,6 @@ app.post("/api/user/address/:id", async (req, res) => {
 
 app.delete("/api/user/address/:id", async (req, res) => {
   try {
-    console.log(req.params.id);
     const deletedAddress = await Address.findByIdAndDelete(req.params.id);
 
     if (!deletedAddress) {
