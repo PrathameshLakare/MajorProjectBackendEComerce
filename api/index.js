@@ -1,20 +1,15 @@
 const express = require("express");
 const app = express();
 const { initializeDatabase } = require("./db/db.connect");
+
+const cors = require("cors");
+app.use(cors());
+
 const Product = require("./models/products.model");
 const Category = require("./models/categories.model");
 const Wishlist = require("./models/wishlist.model");
 const Cart = require("./models/cart.model");
 const Address = require("./models/address.model");
-
-const cors = require("cors");
-
-app.use(
-  cors({
-    origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-  })
-);
 
 app.use(express.json());
 initializeDatabase();
