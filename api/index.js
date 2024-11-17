@@ -1,15 +1,17 @@
 const express = require("express");
 const app = express();
-const { initializeDatabase } = require("./db/db.connect");
+require("dotenv").config();
 
-const cors = require("cors");
-app.use(cors());
+const { initializeDatabase } = require("./db/db.connect");
 
 const Product = require("./models/products.model");
 const Category = require("./models/categories.model");
 const Wishlist = require("./models/wishlist.model");
 const Cart = require("./models/cart.model");
 const Address = require("./models/address.model");
+
+const cors = require("cors");
+app.use(cors());
 
 app.use(express.json());
 initializeDatabase();
