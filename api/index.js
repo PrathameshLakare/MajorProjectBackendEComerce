@@ -9,6 +9,7 @@ const Category = require("./models/categories.model");
 const Wishlist = require("./models/wishlist.model");
 const Cart = require("./models/cart.model");
 const Address = require("./models/address.model");
+const Order = require("./models/order.model");
 
 const cors = require("cors");
 app.use(cors({ origin: "*" }));
@@ -327,6 +328,51 @@ app.delete("/api/user/address/:id", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to delete address." });
+  }
+});
+
+app.post("/api/order", async (req, res) => {
+  try {
+    const cartItems = await Cart.find();
+
+    console.log(cartItems);
+
+    if (!cartItems || cartItems.length === 0) {
+      return res.status(400).json({ error: "Cart is empty." });
+    }
+
+    const products = cartItems.map((cartItem) => ({
+      productId: cartItem.productId,
+      productImg: cartItem.productImg,
+      productName: cartItem.productName,
+      productQuantity: cartItem.productQuantity,
+      productPrice: cartItem.productPrice,
+      productDetails: cartItem.productDetails,
+      productCategories: cartItem.productCategories,
+      productRating: cartItem.productRating,
+    }));
+
+    const totalAmount = cartItems.reduce((total, cartItem) => {
+      return (
+        total + parseFloat(cartItem.productPrice) * cartItem.productQuantity
+      );
+    }, 0);
+
+    const newOrder = new Order({
+      products: products,
+      totalAmount: totalAmount.toString(),
+      shippingAddress: req.body.shippingAddress,
+    });
+    await newOrder.save();
+
+    await Cart.deleteMany();
+
+    res
+      .status(200)
+      .json({ message: "Order placed successfully", order: newOrder });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to place the order." });
   }
 });
 
