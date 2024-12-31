@@ -335,8 +335,6 @@ app.post("/api/order", async (req, res) => {
   try {
     const cartItems = await Cart.find();
 
-    console.log(cartItems);
-
     if (!cartItems || cartItems.length === 0) {
       return res.status(400).json({ error: "Cart is empty." });
     }
