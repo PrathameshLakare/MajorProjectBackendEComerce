@@ -331,7 +331,7 @@ app.delete("/api/user/address/:id", async (req, res) => {
   }
 });
 
-app.post("/api/order", async (req, res) => {
+app.post("/api/order/placed", async (req, res) => {
   try {
     const cartItems = await Cart.find();
 
