@@ -376,6 +376,21 @@ app.post("/api/order", async (req, res) => {
   }
 });
 
+app.get("/api/order/:id", async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+
+    if (!order) {
+      return res.status(404).json({ message: "Order is not found." });
+    }
+
+    res.json(order);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to place the order." });
+  }
+});
+
 const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
