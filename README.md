@@ -16,14 +16,6 @@ This is the backend server for an e-commerce web application built with **Node.j
 
 ## Quick Start
 
-### 🔑 Environment Variables
-
-Create a `.env` file in the root and add:
-
-MONGODB=your_mongodb_connection_string
-
----
-
 ### 🚀 Running the Server
 
 ```bash
@@ -37,6 +29,12 @@ npm install
 node api/index.js
 
 ```
+
+### 🔑 Environment Variables
+
+Create a `.env` file in the root and add:
+
+MONGODB=your_mongodb_connection_string
 
 ---
 
