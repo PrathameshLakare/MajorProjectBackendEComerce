@@ -27,6 +27,9 @@ MONGODB=your_mongodb_connection_string
 ### 🚀 Running the Server
 
 ```bash
+# Clone project
+git clone https://github.com/PrathameshLakare/MajorProjectBackendEComerce.git
+
 # Install dependencies
 npm install
 
